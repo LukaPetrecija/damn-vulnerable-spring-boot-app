@@ -59,7 +59,7 @@ dependencies {
 
     // FP
     // runtime 'mysql:mysql-connector-java:8.0.8-dmr'
-    runtime 'mysql:mysql-connector-java:8.0.28'
+    runtime 'mysql:mysql-connector-java:8.0.31'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 

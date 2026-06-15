@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -31,20 +35,16 @@ class BookController {
     }
 
     @RequestMapping("/detail")
-    public ModelAndView detail(@RequestParam(value = "id") String id) {
-        String sql = "SELECT * FROM books WHERE id=" + id;
+    public ModelAndView detail(@RequestParam(value = "id") Long id) { 
+        String sql = "SELECT id, name, author FROM books WHERE id = ?";
         final Book[] book = new Book[1];
-        jdbcTemplate.query(sql, (ResultSetExtractor) rs -> {
+        jdbcTemplate.query(sql, (ResultSetExtractor<Void>) rs -> {
             if (rs.next())
                 book[0] = new Book(rs.getLong(1), rs.getString(2), rs.getString(3));
-
             return null;
-
-        });
-
+        }, id);
         Map<String, Object> model = new HashMap<>();
         model.put("book", book[0]);
-
         return new ModelAndView("views/sql/detail", model);
     }
 
@@ -83,6 +83,12 @@ class BookController {
 
     private void initDb() {
         jdbcTemplate.execute("CREATE TABLE books (id NUMBER, name VARCHAR(255), author VARCHAR(255))");
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleBadId() {
+        // Intentionally empty
     }
 
 }

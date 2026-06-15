@@ -1,15 +1,15 @@
-FROM openjdk:8-jdk as BUILD
+FROM eclipse-temurin:8-jdk AS build
 
 RUN mkdir /workspace
 WORKDIR /workspace
 COPY . .
 
-RUN ./gradlew build
+RUN sed -i 's/\r$//' gradlew && ./gradlew build
 
-FROM openjdk:8-jre as APP
+FROM eclipse-temurin:8-jre AS app
 
 EXPOSE 8080
 
-COPY --from=BUILD /workspace/build/libs/*.jar damn-vulnerable-spring-boot-app.jar
+COPY --from=build /workspace/build/libs/*.jar damn-vulnerable-spring-boot-app.jar
 
 ENTRYPOINT ["java", "-jar", "./damn-vulnerable-spring-boot-app.jar"]

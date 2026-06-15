@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
@@ -23,9 +25,10 @@ public class CommentController {
             "Hallo, wir sinds! Wolltest du nicht die Fotos von Samstag hochladen? Grüße!"));
 
     @GetMapping(path = "/")
-    public ModelAndView listComments() {
+    public ModelAndView listComments(HttpSession session) {
         Map<String, Object> model = new HashMap<>();
         model.put("comments", comments);
+        model.put("csrf", session.getAttribute("csrfToken"));
 
         return new ModelAndView(
                 "views/comment/comment",
@@ -33,12 +36,12 @@ public class CommentController {
     }
 
     @PostMapping("/")
-    public ModelAndView postComment(@RequestParam String input) {
+    public ModelAndView postComment(@RequestParam String input, HttpSession session) {
         comments.add(input);
 
         Map<String, Object> model = new HashMap<>();
         model.put("comments", comments);
-
+        model.put("csrf", session.getAttribute("csrfToken"));
         return new ModelAndView(
                 "views/comment/comment",
                 model);

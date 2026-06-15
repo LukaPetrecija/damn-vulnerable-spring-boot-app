@@ -6,6 +6,7 @@ html {
     }
     body {
         form(action: "/comments/", method: "POST") {
+            input(type: 'hidden', name: '_csrf', value: csrf)
             input(name: "input") {
 
             }
@@ -17,7 +18,7 @@ html {
                     yield "Comment by Anonymous"
                 }
                 div(style: "border-bottom: 1px solid black;") {
-                    yieldUnescaped comment
+                    yield comment
                 }
             }
         }

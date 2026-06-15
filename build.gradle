@@ -52,12 +52,14 @@ dependencies {
     compile('org.codehaus.groovy:groovy-all:2.4.12')
 
     // CVE
-    compile 'commons-collections:commons-collections:3.2'
+    // compile 'commons-collections:commons-collections:3.2'
+    compile 'commons-collections:commons-collections:3.2.2'
 
     runtime('com.h2database:h2')
 
     // FP
-    runtime 'mysql:mysql-connector-java:8.0.8-dmr'
+    // runtime 'mysql:mysql-connector-java:8.0.8-dmr'
+    runtime 'mysql:mysql-connector-java:8.0.28'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 

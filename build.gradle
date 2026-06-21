@@ -21,6 +21,22 @@ plugins {
     id "groovy"
     id "org.owasp.dependencycheck" version "5.2.1"
     id "com.github.spotbugs" version "2.0.0"
+    id "jacoco"
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
 }
 
 spotbugs {
@@ -69,6 +85,8 @@ dependencies {
 	runtime 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    testCompile('org.apache.httpcomponents:httpclient')
 
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0'
 }

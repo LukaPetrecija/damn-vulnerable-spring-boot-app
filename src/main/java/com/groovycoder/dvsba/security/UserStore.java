@@ -9,7 +9,7 @@ import java.util.Map;
 @Component
 public class UserStore {
 
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     private final Map<String, String> users = new HashMap<>();
     private final Map<String, String> roles = new HashMap<>();

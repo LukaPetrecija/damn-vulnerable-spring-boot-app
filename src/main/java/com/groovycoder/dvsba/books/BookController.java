@@ -48,6 +48,21 @@ class BookController {
         return new ModelAndView("views/sql/detail", model);
     }
 
+    // Fixed SQL injection
+    @RequestMapping("/detail-demo")
+    public ModelAndView detailDemo(@RequestParam(value = "id") Long id) {
+        String sql = "SELECT id, name, author FROM books WHERE id = ?";
+        final Book[] book = new Book[1];
+        jdbcTemplate.query(sql, (ResultSetExtractor<Void>) rs -> {
+            if (rs.next())
+                book[0] = new Book(rs.getLong(1), rs.getString(2), rs.getString(3));
+            return null;
+        }, id);
+        Map<String, Object> model = new HashMap<>();
+        model.put("book", book[0]);
+        return new ModelAndView("views/sql/detail", model);
+}
+
     @PostConstruct
     private void bootstrap() {
         initDb();
